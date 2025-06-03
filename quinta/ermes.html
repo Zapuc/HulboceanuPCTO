@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCTO Quinta - Ermes Srl</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary-dark: #222831; /* Palette seconda scelta, grigio scuro */
+        --secondary-dark: #393e46; /* Grigio medio */
+        --accent-color: #f96d00; /* Arancione brillante */
+        --background-light: #f2f2f2; /* Chiaro per testi o sfondi chiari */
+        --text-light: #f2f2f2; /* Testo chiaro su sfondo scuro */
+        --text-dark: #222831; /* Testo scuro su sfondo chiaro */
+        --text-muted: #7a7d85; /* Grigio medio per testo secondario */
+        --card-bg: #393e46; /* Sfondo delle card */
+        --shadow: rgba(0, 0, 0, 0.35); /* Ombra più neutra */
+        --highlight: rgba(249, 109, 0, 0.15); /* Evidenziazione arancio */
+    }
+
+    body {
+        font-family: 'Calibri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-light);
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+        min-height: 100vh;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .header {
+        text-align: center;
+        padding: 60px 0 40px;
+        color: var(--text-light);
+        margin-bottom: 40px;
+    }
+
+    .header h1 {
+        font-size: 3.2rem;
+        margin-bottom: 15px;
+        font-weight: 700;
+        letter-spacing: -1px;
+        color: var(--background-light);
+    }
+
+    .header .subtitle {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        font-weight: 300;
+        margin-bottom: 20px;
+        color: var(--accent-color);
+    }
+
+    .header .academic-info {
+        font-size: 0.95rem;
+        opacity: 0.8;
+        border-top: 1px solid rgba(249, 109, 0, 0.3);
+        padding-top: 20px;
+        margin-top: 20px;
+        color: var(--text-muted);
+    }
+
+    .navigation {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        margin-bottom: 50px;
+        background: rgba(34, 40, 49, 0.8);
+        border-radius: 8px;
+        padding: 8px;
+        box-shadow: 0 10px 30px var(--shadow);
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        backdrop-filter: blur(5px);
+    }
+
+    .nav-btn {
+        background: transparent;
+        color: var(--text-muted);
+        border: none;
+        padding: 15px 25px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 0.95rem;
+        position: relative;
+        white-space: nowrap;
+    }
+
+    .nav-btn:hover {
+        color: var(--accent-color);
+        background: var(--highlight);
+    }
+
+    .nav-btn.active {
+        background: var(--highlight);
+        color: var(--accent-color);
+        box-shadow: 0 0 10px rgba(249, 109, 0, 0.3);
+    }
+
+    .content-section {
+        display: none;
+        background: var(--card-bg);
+        border-radius: 10px;
+        padding: 50px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px var(--shadow);
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        animation: fadeIn 0.6s ease;
+    }
+
+    .content-section.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+        color: var(--background-light);
+        font-size: 2.3rem;
+        margin-bottom: 40px;
+        text-align: center;
+        position: relative;
+        font-weight: 600;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: var(--accent-color);
+        border-radius: 2px;
+    }
+
+    .intro-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .intro-card, .conclusion-card {
+        background: rgba(57, 62, 70, 0.75);
+        padding: 35px;
+        border-radius: 8px;
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .intro-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background: var(--accent-color);
+    }
+
+    .intro-card:hover, .conclusion-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        background: rgba(57, 62, 70, 0.95);
+    }
+
+    .intro-card h3, .conclusion-card h3 {
+        color: var(--accent-color);
+        margin-bottom: 20px;
+        font-size: 1.4rem;
+        font-weight: 600;
+    }
+
+    .intro-card p, .conclusion-card p {
+        color: var(--text-muted);
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, rgba(57, 62, 70, 0.85), rgba(34, 40, 49, 0.95));
+        color: var(--text-light);
+        padding: 40px;
+        border-radius: 10px;
+        margin: 40px 0;
+        text-align: center;
+        box-shadow: 0 10px 30px var(--shadow);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(249, 109, 0, 0.15);
+    }
+
+    .highlight-box::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(249, 109, 0, 0.1) 0%, transparent 70%);
+    }
+
+    .highlight-box h3 {
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+
+    .highlight-box p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        position: relative;
+        z-index: 1;
+        color: var(--text-light);
+    }
+
+    .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin: 40px 0;
+    }
+
+    .skill-card {
+        background: rgba(57, 62, 70, 0.75);
+        padding: 35px 25px;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.4s ease;
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .skill-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+        background: rgba(57, 62, 70, 0.95);
+        border-color: var(--accent-color);
+    }
+
+    .skill-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: var(--accent-color);
+        filter: drop-shadow(0 2px 4px rgba(249, 109, 0, 0.3));
+    }
+
+    .skill-card h3 {
+        color: var(--background-light);
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .skill-card p {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    .tools-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin: 25px 0;
+        justify-content: center;
+    }
+
+    .tool-tag {
+        background: rgba(249, 109, 0, 0.1);
+        color: var(--accent-color);
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: 1px solid rgba(249, 109, 0, 0.3);
+        transition: all 0.2s ease;
+    }
+
+    .tool-tag:hover {
+        transform: translateY(-2px);
+        background: rgba(249, 109, 0, 0.2);
+    }
+
+    .conclusion-points {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+    }
+
+    .conclusion-card.positive::before {
+        background: linear-gradient(135deg, #f96d00, #d75b00);
+    }
+
+    .conclusion-card.growth::before {
+        background: linear-gradient(135deg, #f96d00, #b45100);
+    }
+
+    .conclusion-card.future::before {
+        background: linear-gradient(135deg, #b45100, #222831);
+    }
+
+    .footer {
+        text-align: center;
+        padding: 40px;
+        color: var(--text-muted);
+        margin-top: 50px;
+        border-top: 1px solid rgba(249, 109, 0, 0.15);
+        font-size: 0.9rem;
+    }
+
+    /* Animation for cards */
+    @keyframes cardAppear {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 2.3rem;
+        }
+        
+        .content-section {
+            padding: 30px 25px;
+        }
+        
+        .navigation {
+            flex-direction: row;
+            flex-wrap: wrap;
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .nav-btn {
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 0;
+            font-size: 0.85rem;
+        }
+
+        .intro-grid, .conclusion-points {
+            grid-template-columns: 1fr;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .header h1 {
+            font-size: 2rem;
+        }
+        
+        .nav-btn {
+            padding: 10px 12px;
+            font-size: 0.8rem;
+        }
+    }
+    
+    .image-card {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(57, 62, 70, 0.75);
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        overflow: hidden;
+        min-height: 260px;
+        width: 100%; /* ✅ Fa espandere il blocco a tutta la larghezza disponibile */
+    }
+
+    /* Immagine vera e propria */
+    .skill-image {
+        width: 100%;       /* ✅ Immagine larga quanto il contenitore */
+        height: 100%;      /* ✅ Immagine alta quanto il contenitore */
+        object-fit: cover; /* ✅ L'immagine riempie completamente il contenitore, ritagliando se necessario */
+        border-radius: 0;
+        transition: all 0.3s ease;
+        display: block;
+    }
+
+    /* Effetto hover sull'immagine */
+    .image-card:hover .skill-image {
+        transform: scale(1.05);
+        filter: grayscale(0%) brightness(1);
+        box-shadow: 0 8px 25px rgba(249, 109, 0, 0.2);
+    }
+
+    .image-card:hover {
+        border-color: var(--accent-color);
+        background: rgba(57, 62, 70, 0.95);
+    }
+
+    .button-outline {
+        display: inline-block;
+        padding: 12px 30px;
+        border: 2px solid var(--text-muted);
+        color: var(--text-muted);
+        background: transparent;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+        margin-top: 20px;
+    }
+
+    .button-outline:hover {
+        background: var(--accent-color);
+        color: var(--background-light);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 15px var(--accent-color);
+    }
+
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Esperienza PCTO di quinta</h1>
+            <p class="subtitle">Ermes Srl - Reparto Tecnico Informatico</p>
+            <button class="button-outline" onclick="window.location.href='../index.html'">Torna alla home</button>
+
+        </header>
+
+        <nav class="navigation">
+            <button class="nav-btn active" onclick="showSection('intro')">Introduzione</button>
+            <button class="nav-btn" onclick="showSection('activities')">Attività Svolte</button>
+            <button class="nav-btn" onclick="showSection('competenze')">Competenze</button>
+            <button class="nav-btn" onclick="showSection('esperienza')">Esperienza</button>
+            <button class="nav-btn" onclick="showSection('conclusioni')">Conclusioni</button>
+        </nav>
+
+        <main>
+            <!-- Sezione Introduzione -->
+            <section id="intro" class="content-section active">
+                <h2 class="section-title">Panoramica del Progetto</h2>
+                
+                <div class="intro-grid">
+                    <div class="intro-card">
+                        <h3>Azienda Ospitante</h3>
+                        <p><strong>Ermes Srl</strong> - Un'azienda specializzata nel settore delle stampanti, che si sta affacciando sul settore dei lockers.</p>
+                    </div>
+                    
+                    <div class="intro-card">
+                        <h3>Reparto di Inserimento</h3>
+                        <p><strong>Reparto Tecnico Informatico</strong> - Mi sono si occupato della programmazione e sviluppo di progetti destinati alla vendita ai clienti.</p>
+                    </div>
+                </div>
+
+                <div class="skill-card image-card">
+                    <img src="imm3.jpeg" alt="Progetto 1" class="skill-image">
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Progetto Principale</h3>
+                    <p>Sono stato coinvolto nella <strong>progettazione e sviluppo dei Lockers</strong>, un sistema innovativo che rappresenta una soluzione tecnologica avanzata per i clienti dell'azienda.</p>
+                </div>
+
+                <div class="intro-card">
+                    <h3>Modalità di Lavoro</h3>
+                    <p>Ho lavorato in team con un compagno di classe, inserendomi in un sistema più ampio dove la programmazione rappresenta un elemento fondamentale nell'ambito dove l'azienda si sta affacciando.</p>
+                </div>
+            </section>
+
+            <!-- Sezione Attività -->
+            <section id="activities" class="content-section">
+                <h2 class="section-title">Attività e Responsabilità</h2>
+                
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>Programmazione</h3>
+                        <p>Sviluppo di codice per il progetto Lockers, utilizzando linguaggi e framework moderni</p>
+                    </div>
+                    
+                    <div class="skill-card">
+                        <h3>Gestione Database</h3>
+                        <p>Amministrazione e ottimizzazione di database per la gestione dei dati del sistema</p>
+                    </div>
+                    
+                    <div class="skill-card">
+                        <h3>Reti</h3>
+                        <p>Configurazione e gestione delle connessioni di rete per il funzionamento del sistema, usando delle raspberry (con linux)</p>
+                    </div>
+                    
+                    <div class="skill-card image-card">
+                        <img src="imm1.jpeg" alt="Progetto 1" class="skill-image">
+                    </div>
+        
+                    <div class="skill-card image-card">
+                        <img src="imm4.jpg" alt="Progetto 2" class="skill-image">
+                    </div>
+
+                    <div class="skill-card image-card">
+                        <img src="imm2.jpg" alt="Progetto 2" class="skill-image">
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Strumenti Utilizzati</h3>
+                    <div class="tools-list">
+                        <span class="tool-tag">Locker Hardware</span>
+                        <span class="tool-tag">PC di Sviluppo</span>
+                        <span class="tool-tag">Raspberry Pi</span>
+                        <span class="tool-tag">Router/Modem</span>
+                        <span class="tool-tag">Ambienti di Sviluppo</span>
+                        <span class="tool-tag">Tutorial YouTube</span>
+                    </div>
+                    <p style="margin-top: 15px;"><em>Formazione tecnica: circa 6 ore di video tutorial specializzati</em></p>
+                </div>
+            </section>
+
+            <!-- Sezione Competenze -->
+            <section id="competenze" class="content-section">
+                <h2 class="section-title">Competenze Sviluppate</h2>
+                
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3>Competenze Tecniche</h3>
+                        <p>Programmazione avanzata, gestione database, networking e amministrazione sistemi</p>
+                    </div>
+                    
+                    <div class="skill-card">
+                        <h3>Gestione del Tempo</h3>
+                        <p>Organizzazione efficace delle attività e rispetto delle scadenze progettuali</p>
+                    </div>
+                    
+                    <div class="skill-card">
+                        <h3>Lavoro di Squadra</h3>
+                        <p>Collaborazione efficace in team e integrazione in progetti già avviati</p>
+                    </div>
+                    
+                    <div class="skill-card">
+                        <h3>Adattabilità</h3>
+                        <p>Capacità di adattarsi rapidamente a nuovi progetti e metodologie di lavoro</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Autonomia Operativa</h3>
+                    <p>Ho goduto di <strong>maggiore libertà operativa</strong>, che ha favorito un maggiore impegno personale e ha accelerato significativamente il processo di apprendimento, permettendomi di sviluppare una curva di miglioramento più ripida.</p>
+                </div>
+            </section>
+
+            <!-- Sezione Esperienza -->
+            <section id="esperienza" class="content-section">
+                <h2 class="section-title">Esperienza Lavorativa</h2>
+                
+                <div class="intro-grid">
+                    <div class="intro-card">
+                        <h3>Figure di Riferimento</h3>
+                        <p>• <strong>Direttore dell'azienda</strong><br>
+                        • <strong>Responsabile di reparto</strong><br>
+                        • <strong>Staff di segreteria</strong><br>
+                        • <strong>Collaboratori tecnici</strong></p>
+                    </div>
+                    
+                    <div class="intro-card">
+                        <h3>Rapporto con il Tutor</h3>
+                        <p><strong>Ottimo</strong> - Il tutor si è dimostrato molto disponibile e chiaro nelle spiegazioni, fornendo un supporto costante e professionale durante tutto il percorso.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Sfide e Difficoltà</h3>
+                    <p>Non ho riscontrato particolari difficoltà grazie alle <strong>esperienze pregresse</strong> nel settore informatico, che mi hanno permesso di integrarmi rapidamente nel team di lavoro.</p>
+                </div>
+
+                <div class="intro-card">
+                    <h3>Motivazione Personale</h3>
+                    <p>La mia motivazione principale è stata la <strong>voglia di imparare cose nuove divertendomi</strong>, evitando di percepire il lavoro come un peso e mantenendo un approccio positivo e proattivo verso le sfide quotidiane.</p>
+                </div>
+            </section>
+
+            <!-- Sezione Conclusioni -->
+            <section id="conclusioni" class="content-section">
+                <h2 class="section-title">Riflessioni e Conclusioni</h2>
+                
+                <div class="conclusion-points">
+                    <div class="conclusion-card positive">
+                        <h3>Aspetti Positivi</h3>
+                        <p>L'esperienza è stata <strong>gratificante e positiva</strong>. Ho acquisito competenze tecniche concrete e ho avuto l'opportunità di lavorare in un ambiente professionale stimolante.</p>
+                    </div>
+                    
+                    <div class="conclusion-card growth">
+                        <h3>Crescita Personale</h3>
+                        <p>Ho imparato molto dal punto di vista tecnico e professionale, acquisendo una maggiore consapevolezza delle dinamiche lavorative nel settore IT.</p>
+                    </div>
+                    
+                    <div class="conclusion-card">
+                        <h3>Orientamento Futuro</h3>
+                        <p>Questa esperienza mi ha fatto capire che, pur apprezzando l'informatica, <strong>non vorrei farne la mia professione per tutta la vita</strong>. È stata quindi utile anche per l'orientamento futuro.</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Raccomandazioni per il Futuro</h3>
+                    <p>Suggerisco di <strong>adottare un approccio più personalizzato e flessibile</strong>, integrando le esperienze di alternanza con le esigenze individuali degli studenti e le specificità del territorio locale.</p>
+                </div>
+
+                <div class="intro-card">
+                    <h3>Impatto sul Percorso</h3>
+                    <p>L'esperienza ha avuto alcune ripercussioni sul percorso scolastico, ma è stata fondamentale per la mia crescita professionale. Nel contesto lavorativo, pur essendo percepiti più come studenti che come veri lavoratori, abbiamo comunque potuto contribuire concretamente ai progetti aziendali.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Presentazione PCTO - Esame di Maturità • Anno Scolastico 2024/2025</p>
+        </footer>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Nasconde tutte le sezioni
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Rimuove la classe active da tutti i bottoni
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Mostra la sezione selezionata
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Aggiunge la classe active al bottone cliccato
+            event.target.classList.add('active');
+            
+            // Smooth scroll verso l'alto
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Aggiungi animazioni di caricamento
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animazione per le cards
+            const cards = document.querySelectorAll('.skill-card, .intro-card, .conclusion-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+
+        // Gestione keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const activeSection = document.querySelector('.content-section.active');
+            const sections = ['intro', 'activities', 'competenze', 'esperienza', 'conclusioni'];
+            const currentIndex = sections.indexOf(activeSection.id);
+            
+            if (e.key === 'ArrowRight' && currentIndex < sections.length - 1) {
+                showSectionByIndex(currentIndex + 1);
+            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                showSectionByIndex(currentIndex - 1);
+            }
+        });
+
+        function showSectionByIndex(index) {
+            const sections = ['intro', 'activities', 'competenze', 'esperienza', 'conclusioni'];
+            const buttons = document.querySelectorAll('.nav-btn');
+            
+            // Simula il click sul bottone corrispondente
+            buttons[index].click();
+        }
+    </script>
+</body>
+</html>

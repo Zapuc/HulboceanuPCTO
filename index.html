@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub Esame di Stato - Percorso Formativo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-dark: #222831;
+            --secondary-dark: #393e46;
+            --accent-color: #f96d00;
+            --background-light: #f2f2f2;
+            --text-light: #f2f2f2;
+            --text-dark: #222831;
+            --text-muted: #7a7d85;
+            --card-bg: #393e46;
+            --shadow: rgba(0, 0, 0, 0.35);
+            --highlight: rgba(249, 109, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Calibri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: var(--text-light);
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            border-radius: 2px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            color: var(--background-light);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 25px;
+            color: var(--accent-color);
+        }
+
+        .header .academic-info {
+            font-size: 1rem;
+            opacity: 0.8;
+            border-top: 1px solid rgba(249, 109, 0, 0.3);
+            padding-top: 25px;
+            margin-top: 25px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .year-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .year-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 45px 35px;
+            box-shadow: 0 15px 40px var(--shadow);
+            border: 1px solid rgba(249, 109, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .year-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-color), #d75b00);
+            transition: width 0.3s ease;
+        }
+
+        .year-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(249, 109, 0, 0.05) 0%, transparent 70%);
+            transition: all 0.4s ease;
+            opacity: 0;
+        }
+
+        .year-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            background: rgba(57, 62, 70, 0.95);
+            border-color: var(--accent-color);
+        }
+
+        .year-card:hover::before {
+            width: 8px;
+        }
+
+        .year-card:hover::after {
+            opacity: 1;
+            transform: rotate(45deg);
+        }
+
+        .year-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            line-height: 1;
+            text-shadow: 0 2px 8px rgba(249, 109, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .year-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--background-light);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .year-description {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .year-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .highlight-tag {
+            background: rgba(249, 109, 0, 0.1);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(249, 109, 0, 0.2);
+        }
+
+        .arrow-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 25px;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .year-card:hover .arrow-icon {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .intro-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 50px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 40px var(--shadow);
+            border: 1px solid rgba(249, 109, 0, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .intro-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+
+        .intro-section h2 {
+            color: var(--background-light);
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .intro-section p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(249, 109, 0, 0.15);
+            font-size: 0.95rem;
+            background: rgba(34, 40, 49, 0.5);
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        .footer .exam-info {
+            color: var(--accent-color);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        /* Animazioni di entrata */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .year-card {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .year-card:nth-child(1) { animation-delay: 0.1s; }
+        .year-card:nth-child(2) { animation-delay: 0.2s; }
+        .year-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .year-cards {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .year-card {
+                padding: 35px 25px;
+            }
+            
+            .year-number {
+                font-size: 3rem;
+            }
+            
+            .intro-section {
+                padding: 35px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .year-number {
+                font-size: 2.5rem;
+            }
+            
+            .year-title {
+                font-size: 1.5rem;
+            }
+        }
+
+            .images-block {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 30px 20px 40px;
+        margin-bottom: 60px;
+        box-shadow: 0 15px 40px var(--shadow);
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        color: var(--background-light);
+        text-align: center;
+    }
+
+    .images-block h3 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+
+    .images-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        justify-items: center;
+    }
+
+    .images-grid img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .images-grid img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(249, 109, 0, 0.7);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .images-block {
+            padding: 25px 15px 35px;
+        }
+        .images-block h3 {
+            font-size: 1.6rem;
+        }
+    }
+
+        .image-card {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(57, 62, 70, 0.75);
+        border: 1px solid rgba(249, 109, 0, 0.15);
+        overflow: hidden;
+        min-height: 260px;
+        width: 100%; /* ✅ Fa espandere il blocco a tutta la larghezza disponibile */
+    }
+
+    /* Immagine vera e propria */
+    .skill-image {
+        width: 100%;       /* ✅ Immagine larga quanto il contenitore */
+        height: 100%;      /* ✅ Immagine alta quanto il contenitore */
+        object-fit: cover; /* ✅ L'immagine riempie completamente il contenitore, ritagliando se necessario */
+        border-radius: 0;
+        transition: all 0.3s ease;
+        display: block;
+    }
+
+    /* Effetto hover sull'immagine */
+    .image-card:hover .skill-image {
+        transform: scale(1.05);
+        filter: grayscale(0%) brightness(1);
+        box-shadow: 0 8px 25px rgba(249, 109, 0, 0.2);
+    }
+
+    .image-card:hover {
+        border-color: var(--accent-color);
+        background: rgba(57, 62, 70, 0.95);
+    }
+
+    .images-block {
+    padding: 0; /* Rimuove il padding per sfruttare tutto lo spazio */
+    overflow: hidden; /* Nasconde eventuali parti dell'immagine che fuoriescono */
+}
+
+.images-block img {
+    width: 100%; /* Occupa tutta la larghezza del contenitore */
+    height: 100%; /* Occupa tutta l'altezza del contenitore */
+    object-fit: cover; /* Copre tutto lo spazio mantenendo le proporzioni */
+    border-radius: 14px 14px 0 0; /* Arrotonda solo gli angoli superiori */
+    display: block; /* Rimuove lo spazio sotto l'immagine */
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>PCTO</h1>
+            <p class="subtitle">Presentazione delle mie esperienze PCTO</p>
+            <div class="academic-info">
+                <p>Istituto Tecnico - Specializzazione Informatica</p>
+            </div>
+        </header>
+
+        <section class="intro-section">
+            <h2>Benvenuti alla mia presentazione</h2>
+            <p>
+                Raccolta di tutti i miei 3 gli anni di PCTO.
+Qui puoi vedere come sono cresciuto, le cose che ho imparato e i progetti a cui ho lavorato durante la terza, quarta e quinta.
+Ogni anno mi ha aiutato a migliorare, sia come studente che come persona, preparandomi al meglio per il lavoro e le sfide future
+            </p>
+        </section>
+
+        <div class="year-cards">
+            <a href="terza/index.html" class="year-card">
+                <div class="year-number">3°</div>
+                <h3 class="year-title">Terzo Anno - MAST</h3>
+                <p class="year-description">
+                    Prime esperienze con il linguaggio di programmazione di statistica (R), 
+                    gestione del tempo per il progetto di airbnb.
+                </p>
+                <div class="year-highlights">
+                    <span class="highlight-tag">Statistica</span>
+                    <span class="highlight-tag">Studio progetti</span>
+                    <span class="highlight-tag">airbnb</span>
+                </div>
+                <div class="arrow-icon">→</div>
+            </a>
+
+            <a href="quarta/prometeia.html" class="year-card">
+                <div class="year-number">4°</div>
+                <h3 class="year-title">Quarto Anno - Prometeia</h3>
+                <p class="year-description">
+                    Approfondimento delle Api-Rest (anticipo argomento di quinta).
+                    Gestione di XML/JSON e altre tipologie di file per un progetto più grande, con dati veri bancari
+                </p>
+                <div class="year-highlights">
+                    <span class="highlight-tag">Api-Rest</span>
+                    <span class="highlight-tag">Java</span>
+                    <span class="highlight-tag">Backend</span>
+                </div>
+                <div class="arrow-icon">→</div>
+            </a>
+
+            <a href="quinta/ermes.html" class="year-card">
+                <div class="year-number">5°</div>
+                <h3 class="year-title">Quinto Anno - Ermes</h3>
+                <p class="year-description">
+                    Gestione lockers, creazione di un sito web per aprire lockers a distanza.
+                    Utilizzo dei DB locali e online.
+                </p>
+                <div class="year-highlights">
+                    <span class="highlight-tag">Lockers</span>
+                    <span class="highlight-tag">Databases</span>
+                    <span class="highlight-tag">Python (flask)</span>
+                </div>
+                <div class="arrow-icon">→</div>
+            </a>
+
+            <div class="images-block">
+                <img src="terza.jpg" alt="Terzo Anno" />
+            </div>
+
+            <!-- Immagine sotto Quarto Anno -->
+            <div class="images-block">
+                <img src="quarta.jpg" alt="Quarto Anno" />
+            </div>
+
+            <!-- Immagine sotto Quinto Anno -->
+            <div class="images-block">
+                <img src="quinta.jpg" alt="Quinto Anno" />
+            </div>
+
+        </div>
+
+        <footer class="footer">
+            <p class="exam-info">Esame di Stato - Anno Scolastico 2024/2025</p>
+            <p>Presentazione del percorso formativo triennale</p>
+            <p>Selezionare un anno per esplorare i contenuti dettagliati</p>
+        </footer>
+    </div>
+
+    <script>
+        // Aggiungi effetti di animazione al caricamento
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.year-card');
+            
+            // Osservatore per animazioni al scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            });
+
+            cards.forEach(card => {
+                observer.observe(card);
+                
+                // Aggiungi effetto sonoro visivo al hover
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-12px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Effetto di typing per il titolo principale
+            const title = document.querySelector('.header h1');
+            const originalText = title.textContent;
+            title.textContent = '';
+            
+            let i = 0;
+            const typeEffect = setInterval(() => {
+                if (i < originalText.length) {
+                    title.textContent += originalText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeEffect);
+                }
+            }, 100);
+        });
+
+        // Funzione per gestire il click con effetto visivo
+        document.querySelectorAll('.year-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Crea un effetto di ripple al click
+                const ripple = document.createElement('div');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(249, 109, 0, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    left: ${e.clientX - rect.left - size/2}px;
+                    top: ${e.clientY - rect.top - size/2}px;
+                    width: ${size}px;
+                    height: ${size}px;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // CSS per l'animazione ripple
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
